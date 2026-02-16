@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Equity Grant Calculator</title>
+<title>Equity Scenario Analysis</title>
 <style>
   :root {
     --bg: #0f1117;
@@ -127,40 +127,6 @@
   }
 
   input[type="number"]::-webkit-inner-spin-button { opacity: 0.5; }
-
-  /* Toggle group */
-  .toggle-group {
-    display: flex;
-    gap: 0;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-  }
-
-  .toggle-group button {
-    flex: 1;
-    background: var(--surface2);
-    border: none;
-    color: var(--text-muted);
-    padding: 8px 12px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s;
-    border-right: 1px solid var(--border);
-  }
-
-  .toggle-group button:last-child { border-right: none; }
-
-  .toggle-group button.active {
-    background: var(--accent);
-    color: #fff;
-  }
-
-  .toggle-group button:hover:not(.active) {
-    background: var(--border);
-    color: var(--text);
-  }
 
   .kpi-grid {
     display: grid;
@@ -508,7 +474,7 @@
 <body>
 <div class="container">
   <header>
-    <h1>New Hire Equity Grant Calculator</h1>
+    <h1>Equity Scenario Analysis</h1>
   </header>
 
   <!-- Input Section -->
@@ -559,12 +525,9 @@
       <h2>Grant Details</h2>
       <div class="field">
         <label>Shares Granted (Common Stock)</label>
-        <select id="sharesGranted">
-          <option value="100000" selected>100,000</option>
-          <option value="110000">110,000</option>
-          <option value="120000">120,000</option>
-          <option value="130000">130,000</option>
-        </select>
+        <div class="field-row">
+          <span class="value">110,000</span>
+        </div>
       </div>
       <div class="field">
         <label>Ownership % at Grant (Pre-Series B)</label>
@@ -615,13 +578,9 @@
         </select>
       </div>
       <div class="field">
-        <label>Dilution Severity
-          <span class="carta-ref" id="severitySource">Carta deep tech data</span>
-        </label>
-        <div class="toggle-group" id="severityToggle">
-          <button data-val="low">Low (25th pct)</button>
-          <button data-val="mid" class="active">Mid (50th pct)</button>
-          <button data-val="high">High (75th pct)</button>
+        <label>Dilution Severity <span class="carta-ref">Carta 50th pct (median)</span></label>
+        <div class="field-row">
+          <span class="value">Mid (50th pct)</span>
         </div>
       </div>
       <div class="field">
@@ -697,11 +656,25 @@
       </div>
     </div>
     <div class="prob-sens-panel">
-      <div class="panel-title">Annualized Net Equity Value Post-Dilution <span class="badge">Shares &times; Exit</span></div>
-      <p class="panel-sub">(Shares &times; exit valuation &divide; fully diluted shares &minus; strike cost) &divide; 4 years</p>
+      <div class="panel-title">Net Equity Value Post-Dilution <span class="badge">110K Shares</span></div>
+      <p class="panel-sub">(110K &times; exit valuation &divide; fully diluted shares &minus; strike cost)</p>
       <div class="table-wrapper">
         <table id="sensitivityTable"></table>
       </div>
+    </div>
+  </div>
+
+  <!-- Equity Value Chart -->
+  <div class="section-title">Equity Value by Exit &amp; Dilution <span class="badge">Visual</span></div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <span style="font-size:12px;color:var(--text-muted);">Annualized net equity value (110K shares) across exit valuations and dilution severity</span>
+    </div>
+    <canvas id="equityChart" width="900" height="340" style="width:100%;height:auto;"></canvas>
+    <div style="display:flex;gap:20px;justify-content:center;margin-top:12px;">
+      <span style="font-size:11px;color:var(--green);"><span style="display:inline-block;width:24px;height:3px;background:var(--green);vertical-align:middle;margin-right:4px;border-radius:2px;"></span>Low dilution (25th pct)</span>
+      <span style="font-size:11px;color:var(--accent-light);"><span style="display:inline-block;width:24px;height:3px;background:var(--accent-light);vertical-align:middle;margin-right:4px;border-radius:2px;"></span>Mid dilution (50th pct)</span>
+      <span style="font-size:11px;color:var(--red);"><span style="display:inline-block;width:24px;height:3px;background:var(--red);vertical-align:middle;margin-right:4px;border-radius:2px;"></span>High dilution (75th pct)</span>
     </div>
   </div>
 
@@ -771,22 +744,12 @@
   // =====================================================
   // DOM REFS
   // =====================================================
-  const elSharesGranted = document.getElementById('sharesGranted');
+  const SHARES_GRANTED = 110_000;
   const elSeriesBDilution = document.getElementById('seriesBDilution');
   const elFutureRounds = document.getElementById('futureRounds');
   const elExitValuation = document.getElementById('exitValuation');
 
-  let severity = 'mid'; // low, mid, high
-
-  // Severity toggle
-  document.querySelectorAll('#severityToggle button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('#severityToggle button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      severity = btn.dataset.val;
-      compute();
-    });
-  });
+  const severity = 'mid';
 
   // =====================================================
   // CORE COMPUTATION
@@ -831,7 +794,7 @@
   }
 
   function compute() {
-    const sharesGranted = parseInt(elSharesGranted.value) || 0;
+    const sharesGranted = SHARES_GRANTED;
     const schedule = getDilutionSchedule();
 
     // --- Fundamentals ---
@@ -887,6 +850,9 @@
     document.getElementById('kpiAvgAnnualSub').textContent = 'Cash + equity at ' + fmtDollar(exitValuation) + ' exit';
     document.getElementById('kpiTotal4yr').textContent = fmtDollar(total4yr);
     document.getElementById('kpiTotal4yrSub').textContent = fmtDollar(CASH_COMP * HORIZON) + ' cash + ' + fmtDollar(netEquity) + ' equity';
+
+    // --- Equity Chart ---
+    buildEquityChart();
   }
 
   // =====================================================
@@ -955,9 +921,8 @@
   // =====================================================
   // SENSITIVITY TABLE &mdash; POST-DILUTION NET VALUE
   // =====================================================
-  function buildSensitivityTable(currentShares, finalTotalShares) {
+  function buildSensitivityTable(sharesGranted, finalTotalShares) {
     const table = document.getElementById('sensitivityTable');
-    const shareValues = [100000, 110000, 120000, 130000];
 
     const exitValues = [];
     for (let e = 1e9; e <= 10e9; e += 1e9) exitValues.push(e);
@@ -971,30 +936,37 @@
       if (dist < closestDist) { closestDist = dist; closestExitCol = ev; }
     });
 
-    let html = '<thead><tr><th>Shares &darr; \\ Exit &rarr;</th>';
+    let html = '<thead><tr><th style="text-align:left;border-right:2px solid var(--border);">Exit Valuation</th>';
     exitValues.forEach(ev => {
       const isSelectedCol = ev === closestExitCol;
       html += `<th${isSelectedCol ? ' style="color:var(--accent-light);"' : ''}>${fmtDollar(ev)}</th>`;
     });
     html += '</tr></thead><tbody>';
 
-    shareValues.forEach(shares => {
-      const isCurrentRow = shares === currentShares;
-      html += `<tr class="${isCurrentRow ? 'highlight-row' : ''}">`;
-      html += `<td>${fmt(shares)}${isCurrentRow ? ' <span style="font-size:9px;color:var(--accent-light);">&laquo; SELECTED</span>' : ''}</td>`;
-      exitValues.forEach(ev => {
-        const pps = ev / finalTotalShares;
-        const gross = shares * pps;
-        const strikeCost = shares * STRIKE_PRICE;
-        const net = gross - strikeCost;
-        const annualized = net / HORIZON;
-        const isHighlight = isCurrentRow && ev === closestExitCol;
-        const cls = isHighlight ? 'highlight-cell' : '';
-        const colorCls = annualized < 0 ? 'negative' : '';
-        html += `<td class="${cls} ${colorCls}">${fmtDollar(annualized)}</td>`;
-      });
-      html += '</tr>';
+    // Annualized equity row
+    html += '<tr><td>Annualized Equity</td>';
+    exitValues.forEach(ev => {
+      const pps = ev / finalTotalShares;
+      const net = sharesGranted * pps - sharesGranted * STRIKE_PRICE;
+      const annualized = net / HORIZON;
+      const isHighlight = ev === closestExitCol;
+      const cls = isHighlight ? 'highlight-cell' : '';
+      const colorCls = annualized < 0 ? 'negative' : '';
+      html += `<td class="${cls} ${colorCls}">${fmtDollar(annualized)}</td>`;
     });
+    html += '</tr>';
+
+    // Total 4-year row
+    html += '<tr><td>Total 4-Year Equity</td>';
+    exitValues.forEach(ev => {
+      const pps = ev / finalTotalShares;
+      const net = sharesGranted * pps - sharesGranted * STRIKE_PRICE;
+      const isHighlight = ev === closestExitCol;
+      const cls = isHighlight ? 'highlight-cell' : '';
+      const colorCls = net < 0 ? 'negative' : '';
+      html += `<td class="${cls} ${colorCls}">${fmtDollar(net)}</td>`;
+    });
+    html += '</tr>';
 
     html += '</tbody>';
     table.innerHTML = html;
@@ -1077,9 +1049,169 @@
   }
 
   // =====================================================
+  // EQUITY VALUE CHART
+  // =====================================================
+  function buildEquityChart() {
+    const canvas = document.getElementById('equityChart');
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+
+    // Hi-DPI scaling
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+    const W = rect.width;
+    const H = rect.height;
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Chart config
+    const pad = { top: 20, right: 20, bottom: 40, left: 70 };
+    const cW = W - pad.left - pad.right;
+    const cH = H - pad.top - pad.bottom;
+
+    const exitValues = [];
+    for (let e = 1e9; e <= 10e9; e += 1e9) exitValues.push(e);
+
+    const seriesBDilution = parseFloat(elSeriesBDilution.value);
+    const futureRounds = parseInt(elFutureRounds.value);
+
+    // Calculate total shares for each dilution severity
+    function calcTotalShares(sev) {
+      let total = PRE_B_SHARES / (1 - seriesBDilution);
+      const rounds = [CARTA_DILUTION.seriesC, CARTA_DILUTION.seriesD];
+      for (let i = 0; i < futureRounds && i < rounds.length; i++) {
+        total = total / (1 - rounds[i][sev]);
+      }
+      return total;
+    }
+
+    const scenarios = [
+      { key: 'low', color: '#00b894', label: 'Low' },
+      { key: 'mid', color: '#a29bfe', label: 'Mid' },
+      { key: 'high', color: '#e17055', label: 'High' },
+    ];
+
+    // Compute data points for each scenario
+    const allData = scenarios.map(s => {
+      const totalShares = calcTotalShares(s.key);
+      return exitValues.map(ev => {
+        const net = SHARES_GRANTED * (ev / totalShares) - SHARES_GRANTED * STRIKE_PRICE;
+        return net / HORIZON;
+      });
+    });
+
+    // Y-axis range
+    const allVals = allData.flat();
+    const yMin = Math.min(0, Math.min(...allVals));
+    const yMax = Math.max(...allVals) * 1.1;
+
+    function xPos(i) { return pad.left + (i / (exitValues.length - 1)) * cW; }
+    function yPos(v) { return pad.top + cH - ((v - yMin) / (yMax - yMin)) * cH; }
+
+    // Grid lines
+    ctx.strokeStyle = '#2e3142';
+    ctx.lineWidth = 0.5;
+    const yTicks = 6;
+    for (let i = 0; i <= yTicks; i++) {
+      const v = yMin + (yMax - yMin) * (i / yTicks);
+      const y = yPos(v);
+      ctx.beginPath();
+      ctx.moveTo(pad.left, y);
+      ctx.lineTo(W - pad.right, y);
+      ctx.stroke();
+
+      // Y labels
+      ctx.fillStyle = '#8b8fa3';
+      ctx.font = '11px -apple-system, BlinkMacSystemFont, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(fmtDollar(v), pad.left - 8, y);
+    }
+
+    // X labels
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    exitValues.forEach((ev, i) => {
+      const x = xPos(i);
+      ctx.fillStyle = '#8b8fa3';
+      ctx.font = '11px -apple-system, BlinkMacSystemFont, sans-serif';
+      ctx.fillText(fmtDollar(ev), x, pad.top + cH + 10);
+
+      // Vertical grid
+      ctx.strokeStyle = '#2e3142';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      ctx.moveTo(x, pad.top);
+      ctx.lineTo(x, pad.top + cH);
+      ctx.stroke();
+    });
+
+    // Zero line
+    if (yMin < 0) {
+      ctx.strokeStyle = '#4a4d5e';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(pad.left, yPos(0));
+      ctx.lineTo(W - pad.right, yPos(0));
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // Draw lines with area fill
+    allData.forEach((data, si) => {
+      const color = scenarios[si].color;
+
+      // Area fill
+      ctx.beginPath();
+      ctx.moveTo(xPos(0), yPos(0));
+      data.forEach((v, i) => ctx.lineTo(xPos(i), yPos(v)));
+      ctx.lineTo(xPos(data.length - 1), yPos(0));
+      ctx.closePath();
+      ctx.fillStyle = color + '12';
+      ctx.fill();
+
+      // Line
+      ctx.beginPath();
+      data.forEach((v, i) => {
+        if (i === 0) ctx.moveTo(xPos(i), yPos(v));
+        else ctx.lineTo(xPos(i), yPos(v));
+      });
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Dots
+      data.forEach((v, i) => {
+        ctx.beginPath();
+        ctx.arc(xPos(i), yPos(v), 3, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+      });
+    });
+
+    // Highlight selected exit valuation
+    const selectedExit = parseFloat(elExitValuation.value);
+    const selectedIdx = exitValues.indexOf(selectedExit);
+    if (selectedIdx >= 0) {
+      const x = xPos(selectedIdx);
+      ctx.strokeStyle = '#a29bfe';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(x, pad.top);
+      ctx.lineTo(x, pad.top + cH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+
+  // =====================================================
   // EVENT LISTENERS
   // =====================================================
-  [elSharesGranted, elSeriesBDilution, elFutureRounds, elExitValuation].forEach(el => {
+  [elSeriesBDilution, elFutureRounds, elExitValuation].forEach(el => {
     el.addEventListener('change', compute);
     el.addEventListener('input', compute);
   });
