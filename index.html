@@ -784,16 +784,16 @@
     const totalDilution = 1 - (stages[stages.length - 1].ownership / stages[0].ownership);
     document.getElementById('waterfallTotal').textContent = 'Cumulative dilution: ' + fmtPct(totalDilution, 1);
 
-    // Detail rows
+    // Detail rows — colors match waterfall bars (stageColors[0] = At Grant, so rounds start at index 1)
     const detail = document.getElementById('dilutionDetail');
     let detailHtml = '';
     schedule.forEach((round, i) => {
       const pctWidth = (round.dilutionPct / 0.30) * 100; // normalize to 30% max
-      const color = round.dilutionPct > 0.20 ? 'var(--red)' : round.dilutionPct > 0.12 ? 'var(--yellow)' : 'var(--green)';
+      const sc = stageColors[i + 1] || stageColors[stageColors.length - 1];
       detailHtml += `
         <span class="round-name">${round.name}</span>
-        <div class="bar-track"><div class="bar-fill" style="width:${Math.min(pctWidth, 100)}%;background:${color};"></div></div>
-        <span style="color:${color};font-weight:600;">${fmtPct(round.dilutionPct, 1)}</span>
+        <div class="bar-track"><div class="bar-fill" style="width:${Math.min(pctWidth, 100)}%;background:${sc.bar};"></div></div>
+        <span style="color:${sc.bar};font-weight:600;">${fmtPct(round.dilutionPct, 1)}</span>
         <span style="color:var(--text-muted);">+${fmt(Math.round(round.newSharesIssued))} shares &rarr; ${fmt(Math.round(round.totalSharesAfter))} total</span>
       `;
     });
