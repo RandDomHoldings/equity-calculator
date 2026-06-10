@@ -378,21 +378,21 @@
     <div class="card">
       <h2>Company Fundamentals</h2>
       <div class="field">
-        <label>Shares Outstanding (Pre-Series B)</label>
+        <label>Fully Diluted Shares (Pre-Series B, incl. SAFEs)</label>
         <div class="field-row">
-          <span class="value">34,000,000</span>
+          <span class="value">52,770,000</span>
         </div>
       </div>
       <div class="field">
         <label>Strike Price</label>
         <div class="field-row">
-          <span class="value">$1.00</span>
+          <span class="value">$1.20</span>
         </div>
       </div>
       <div class="field">
         <label>Series B Terms</label>
         <div class="field-row">
-          <span class="value" style="font-size:13px;">$200M raise &middot; $1.0B pre &middot; $1.2B post</span>
+          <span class="value" style="font-size:13px;">$700M raise &middot; $5.5B pre &middot; $6.2B post</span>
         </div>
       </div>
       <div class="field">
@@ -438,7 +438,7 @@
         </div>
       </div>
       <div class="field">
-        <label>Ownership % Fully Diluted (Post Series B&ndash;D)</label>
+        <label>Ownership % Fully Diluted (Post Series B&ndash;E)</label>
         <div class="field-row">
           <span class="value negative" id="ownershipFullyDiluted">&mdash;</span>
         </div>
@@ -456,24 +456,23 @@
     <div class="card">
       <h2>Scenario Controls</h2>
       <div class="field">
-        <label>Series B Dilution <span class="carta-ref">Carta 50th pct: 16.0%</span></label>
-        <select id="seriesBDilution">
-          <option value="0.167">16.7% &mdash; Implied ($200M / $1.2B post)</option>
-          <option value="0.10">10.0% &mdash; Carta 25th pct</option>
-          <option value="0.16" selected>16.0% &mdash; Carta 50th pct</option>
-          <option value="0.243">24.3% &mdash; Carta 75th pct</option>
-        </select>
+        <label>Series B Dilution <span class="carta-ref">$700M / $6.2B post</span></label>
+        <div class="field-row">
+          <span class="value negative" id="seriesBDilutionVal">&mdash;</span>
+          <span class="tag tag-yellow" style="font-size:10px;">Concrete priced round</span>
+        </div>
       </div>
       <div class="field">
         <label>Future Rounds (Post Series B)</label>
         <select id="futureRounds">
           <option value="0">None &mdash; Exit at Series B stage</option>
           <option value="1">Series C only</option>
-          <option value="2" selected>Series C + D</option>
+          <option value="2">Series C + D</option>
+          <option value="3" selected>Series C + D + E</option>
         </select>
       </div>
       <div class="field">
-        <label>Dilution Severity (Series C &amp; D)
+        <label>Dilution Severity (Series C, D &amp; E)
           <span class="carta-ref">Carta deep tech data</span>
         </label>
         <select id="severitySelect">
@@ -509,12 +508,12 @@
       <div class="sub" id="kpiOwnershipSub">&mdash;</div>
     </div>
     <div class="kpi">
-      <div class="label">4-Year Equity Value (at 5&times;)</div>
+      <div class="label">4-Year Equity Value (at $7B exit)</div>
       <div class="number positive" id="kpiEquity4yr">&mdash;</div>
       <div class="sub" id="kpiEquity4yrSub">Net equity at $5B exit</div>
     </div>
     <div class="kpi">
-      <div class="label">Total 4-Year Comp (at 5&times;)</div>
+      <div class="label">Total 4-Year Comp (at $7B exit)</div>
       <div class="number positive" id="kpiTotal4yr">&mdash;</div>
       <div class="sub" id="kpiTotal4yrSub">Cash + net equity value</div>
     </div>
@@ -556,10 +555,10 @@
   <div class="info-note">
     <strong>Assumptions & Disclaimers:</strong><br>
     &bull; <strong>Dilution model:</strong> Granted shares are fixed. Dilution occurs as new shares are issued to investors each round, increasing total shares outstanding and reducing ownership percentage.<br>
-    &bull; <strong>Series B dilution:</strong> The $200M raise at $1.0B pre-money implies ~16.7% dilution ($200M/$1.2B). The default uses the Carta median of 16.0% for Series B rounds.<br>
-    &bull; <strong>Carta benchmarks:</strong> Future round dilution uses Carta's deep tech fundraising data (919 rounds). Series C: 8.5% / 14.0% / 21.0% at 25th/50th/75th percentile. Series D+ estimated from priced round trends.<br>
-    &bull; <strong>Common vs. Preferred:</strong> This grant is common stock valued at the preferred PPS for illustration. Common shares typically trade at a discount to preferred due to lack of liquidation preferences and other protective provisions. The $1.00 strike price reflects a 409A valuation, not the preferred price.<br>
-    &bull; <strong>Strike cost:</strong> Exercise cost is $1.00 &times; shares. Net value = (shares granted &divide; total shares &times; exit valuation) &minus; strike cost.<br>
+    &bull; <strong>Series B dilution:</strong> The $700M raise at $5.5B pre-money ($6.2B post) is a concrete priced round implying ~11.3% dilution ($700M/$6.2B). The 52.77M pre-money share count is fully diluted, accounting for all outstanding SAFEs converting in the round.<br>
+    &bull; <strong>Carta benchmarks:</strong> Post-Series-B round dilution (Series C, D, E) uses Carta's deep tech fundraising data (919 rounds). Series C: 8.5% / 14.0% / 21.0% at 25th/50th/75th percentile. Series D and E estimated from later-stage priced round trends.<br>
+    &bull; <strong>Common vs. Preferred:</strong> This grant is common stock valued at the preferred PPS for illustration. Common shares typically trade at a discount to preferred due to lack of liquidation preferences and other protective provisions. The $1.20 strike price reflects a 409A valuation, not the preferred price.<br>
+    &bull; <strong>Strike cost:</strong> Exercise cost is $1.20 &times; shares. Net value = (shares granted &divide; total shares &times; exit valuation) &minus; strike cost.<br>
     &bull; This is not financial or tax advice. AMT, capital gains, and liquidity preferences are not modeled.
   </div>
 
@@ -570,16 +569,18 @@
   // =====================================================
   // CONSTANTS
   // =====================================================
-  const PRE_B_SHARES = 34_000_000;
-  const SERIES_B_RAISE = 200_000_000;
-  const PRE_MONEY = 1_000_000_000;
-  const POST_MONEY = PRE_MONEY + SERIES_B_RAISE;
-  const STRIKE_PRICE = 1.00;
+  const PRE_B_SHARES = 52_770_000;   // fully diluted incl. all outstanding SAFEs converting in Series B
+  const SERIES_B_RAISE = 700_000_000;
+  const PRE_MONEY = 5_500_000_000;
+  const POST_MONEY = PRE_MONEY + SERIES_B_RAISE;   // $6.2B post-money
+  const STRIKE_PRICE = 1.20;
 
-  // Series B: new shares = pre-B shares * (raise / pre-money)
-  const SERIES_B_NEW_SHARES = PRE_B_SHARES * (SERIES_B_RAISE / PRE_MONEY);
+  // Series B priced round: PPS set by pre-money / pre-money fully diluted shares
+  const SERIES_B_PPS = PRE_MONEY / PRE_B_SHARES;
+  const SERIES_B_NEW_SHARES = SERIES_B_RAISE / SERIES_B_PPS;
   const POST_B_TOTAL_SHARES = PRE_B_SHARES + SERIES_B_NEW_SHARES;
-  const IMPLIED_PPS = POST_MONEY / POST_B_TOTAL_SHARES;
+  const SERIES_B_DILUTION = SERIES_B_RAISE / POST_MONEY;   // new shares / post-money shares
+  const IMPLIED_PPS = POST_MONEY / POST_B_TOTAL_SHARES;    // equals SERIES_B_PPS
 
   // =====================================================
   // CARTA DILUTION BENCHMARKS (Deep Tech, Priced Rounds)
@@ -592,6 +593,8 @@
     // Series D+ &mdash; extrapolated from Carta priced round trends
     // Later rounds typically have lower dilution as companies are larger
     seriesD: { low: 0.060, mid: 0.100, high: 0.160 },
+    // Series E &mdash; extrapolated lower as the company matures further
+    seriesE: { low: 0.045, mid: 0.075, high: 0.120 },
   };
 
   // =====================================================
@@ -620,7 +623,6 @@
   // DOM REFS
   // =====================================================
   const SHARES_GRANTED = 110_000;
-  const elSeriesBDilution = document.getElementById('seriesBDilution');
   const elFutureRounds = document.getElementById('futureRounds');
   const elSeverity = document.getElementById('severitySelect');
 
@@ -628,7 +630,6 @@
   // CORE COMPUTATION
   // =====================================================
   function getDilutionSchedule() {
-    const seriesBDilution = parseFloat(elSeriesBDilution.value);
     const futureRounds = parseInt(elFutureRounds.value);
     const severity = elSeverity.value;
 
@@ -636,13 +637,12 @@
     // Each entry: { name, dilutionPct, newSharesIssued, totalSharesAfter }
     const schedule = [];
 
-    // Series B &mdash; uses the dropdown (could be implied or Carta)
-    const seriesBNewShares = (PRE_B_SHARES / (1 - seriesBDilution)) - PRE_B_SHARES;
-    let totalShares = PRE_B_SHARES + seriesBNewShares;
+    // Series B &mdash; concrete priced round: $700M raised at $5.5B pre-money
+    let totalShares = POST_B_TOTAL_SHARES;
     schedule.push({
       name: 'Series B',
-      dilutionPct: seriesBDilution,
-      newSharesIssued: seriesBNewShares,
+      dilutionPct: SERIES_B_DILUTION,
+      newSharesIssued: SERIES_B_NEW_SHARES,
       totalSharesAfter: totalShares,
     });
 
@@ -650,6 +650,7 @@
     const roundDefs = [
       { name: 'Series C', data: CARTA_DILUTION.seriesC },
       { name: 'Series D', data: CARTA_DILUTION.seriesD },
+      { name: 'Series E', data: CARTA_DILUTION.seriesE },
     ];
 
     for (let i = 0; i < futureRounds && i < roundDefs.length; i++) {
@@ -675,6 +676,7 @@
     document.getElementById('seriesBShares').textContent = fmt(Math.round(SERIES_B_NEW_SHARES));
     document.getElementById('postBTotalShares').textContent = fmt(Math.round(POST_B_TOTAL_SHARES));
     document.getElementById('impliedPPS').textContent = '$' + IMPLIED_PPS.toFixed(2);
+    document.getElementById('seriesBDilutionVal').textContent = fmtPct(SERIES_B_DILUTION, 1);
 
     // --- Ownership at various stages ---
     const ownershipAtGrant = sharesGranted / PRE_B_SHARES;
@@ -712,7 +714,7 @@
     buildSensitivityTable(sharesGranted, finalTotalShares);
 
     // --- 4-Year Vest KPIs (at $5B base case) ---
-    const baseExitEV = 5e9;
+    const baseExitEV = 7e9;
     const basePPS = baseExitEV / finalTotalShares;
     const baseNetEquity = sharesGranted * basePPS - sharesGranted * STRIKE_PRICE;
     const baseTotal4yr = CASH_COMP * HORIZON + baseNetEquity;
@@ -758,6 +760,7 @@
       { bar: '#00b894', tip: '#00b894', lost: 'rgba(0,184,148,0.15)', lostBorder: 'rgba(0,184,148,0.4)' },       // Series B (teal)
       { bar: '#fdcb6e', tip: '#fdcb6e', lost: 'rgba(253,203,110,0.15)', lostBorder: 'rgba(253,203,110,0.4)' },   // Series C (amber)
       { bar: '#e17055', tip: '#e17055', lost: 'rgba(225,112,85,0.15)', lostBorder: 'rgba(225,112,85,0.4)' },       // Series D (coral)
+      { bar: '#74b9ff', tip: '#74b9ff', lost: 'rgba(116,185,255,0.15)', lostBorder: 'rgba(116,185,255,0.4)' },     // Series E (blue)
     ];
 
     stages.forEach((s, i) => {
@@ -810,8 +813,8 @@
 
     let html = '<thead><tr><th style="text-align:left;border-right:2px solid var(--border);">Exit Valuation</th>';
     exitValues.forEach(ev => {
-      const is5B = ev === 5e9;
-      html += `<th${is5B ? ' style="color:var(--accent-light);"' : ''}>${fmtDollar(ev)}${is5B ? ' (5&times;)' : ''}</th>`;
+      const is5B = ev === 7e9;
+      html += `<th${is5B ? ' style="color:var(--accent-light);"' : ''}>${fmtDollar(ev)}${is5B ? ' (base)' : ''}</th>`;
     });
     html += '</tr></thead><tbody>';
 
@@ -820,7 +823,7 @@
     exitValues.forEach(ev => {
       const pps = ev / finalTotalShares;
       const net = sharesGranted * pps - sharesGranted * STRIKE_PRICE;
-      const is5B = ev === 5e9;
+      const is5B = ev === 7e9;
       const cls = is5B ? 'highlight-cell' : '';
       const colorCls = net < 0 ? 'negative' : '';
       html += `<td class="${cls} ${colorCls}">${fmtDollar(net)}</td>`;
@@ -833,7 +836,7 @@
       const pps = ev / finalTotalShares;
       const net = sharesGranted * pps - sharesGranted * STRIKE_PRICE;
       const total = CASH_COMP * HORIZON + net;
-      const is5B = ev === 5e9;
+      const is5B = ev === 7e9;
       const cls = is5B ? 'highlight-cell' : '';
       html += `<td class="${cls}">${fmtDollar(total)}</td>`;
     });
@@ -872,13 +875,12 @@
 
     const exitValues = [1e9, 2e9, 3e9, 5e9, 7e9, 10e9, 15e9, 20e9];
 
-    const seriesBDilution = parseFloat(elSeriesBDilution.value);
     const futureRounds = parseInt(elFutureRounds.value);
 
     // Calculate total shares for each dilution severity
     function calcTotalShares(sev) {
-      let total = PRE_B_SHARES / (1 - seriesBDilution);
-      const rounds = [CARTA_DILUTION.seriesC, CARTA_DILUTION.seriesD];
+      let total = POST_B_TOTAL_SHARES;
+      const rounds = [CARTA_DILUTION.seriesC, CARTA_DILUTION.seriesD, CARTA_DILUTION.seriesE];
       for (let i = 0; i < futureRounds && i < rounds.length; i++) {
         total = total / (1 - rounds[i][sev]);
       }
@@ -1113,7 +1115,7 @@
   // =====================================================
   // EVENT LISTENERS
   // =====================================================
-  [elSeriesBDilution, elFutureRounds, elSeverity].forEach(el => {
+  [elFutureRounds, elSeverity].forEach(el => {
     el.addEventListener('change', compute);
     el.addEventListener('input', compute);
   });
