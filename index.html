@@ -374,43 +374,32 @@
 
   <!-- Input Section -->
   <div class="grid-3">
-    <!-- Company Fundamentals -->
+    <!-- Series B (Closed) -->
     <div class="card">
-      <h2>Company Fundamentals</h2>
+      <h2>Series B &mdash; Closed</h2>
       <div class="field">
-        <label>Fully Diluted Shares (Pre-Series B, incl. SAFEs)</label>
+        <label>Shares Outstanding (Current, Post-Series B)</label>
         <div class="field-row">
-          <span class="value">52,770,000</span>
+          <span class="value">62,177,446</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Series B Preferred PPS</label>
+        <div class="field-row">
+          <span class="value">$96.5077</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Post-Money Valuation</label>
+        <div class="field-row">
+          <span class="value">$6.0B</span>
+          <span class="tag tag-green" style="font-size:10px;">Closed round</span>
         </div>
       </div>
       <div class="field">
         <label>Strike Price</label>
         <div class="field-row">
           <span class="value">$1.20</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>Series B Terms</label>
-        <div class="field-row">
-          <span class="value" style="font-size:13px;">$700M raise &middot; $5.5B pre &middot; $6.2B post</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>Series B New Shares Issued</label>
-        <div class="field-row">
-          <span class="value" id="seriesBShares">&mdash;</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>Post-Series B Total Shares</label>
-        <div class="field-row">
-          <span class="value" id="postBTotalShares">&mdash;</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>Implied Price Per Share (Preferred)</label>
-        <div class="field-row">
-          <span class="value" id="impliedPPS">&mdash;</span>
         </div>
       </div>
     </div>
@@ -425,20 +414,14 @@
         </div>
       </div>
       <div class="field">
-        <label>Ownership % at Grant (Pre-Series B)</label>
-        <div class="field-row">
-          <span class="value" id="ownershipAtGrant">&mdash;</span>
-          <span class="tag tag-blue" style="font-size:10px;">Pre-dilution</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>Ownership % Post-Series B</label>
+        <label>Ownership % (Current, Post-Series B)</label>
         <div class="field-row">
           <span class="value" id="ownershipPostB">&mdash;</span>
+          <span class="tag tag-blue" style="font-size:10px;">Today</span>
         </div>
       </div>
       <div class="field">
-        <label>Ownership % Fully Diluted (Post Series B&ndash;E)</label>
+        <label>Ownership % Fully Diluted (Post Series C&ndash;E)</label>
         <div class="field-row">
           <span class="value negative" id="ownershipFullyDiluted">&mdash;</span>
         </div>
@@ -452,16 +435,9 @@
       </div>
     </div>
 
-    <!-- Scenario Controls -->
+    <!-- Future Round Scenarios -->
     <div class="card">
-      <h2>Scenario Controls</h2>
-      <div class="field">
-        <label>Series B Dilution <span class="carta-ref">$700M / $6.2B post</span></label>
-        <div class="field-row">
-          <span class="value negative" id="seriesBDilutionVal">&mdash;</span>
-          <span class="tag tag-yellow" style="font-size:10px;">Concrete priced round</span>
-        </div>
-      </div>
+      <h2>Future Round Scenarios</h2>
       <div class="field">
         <label>Future Rounds (Post Series B)</label>
         <select id="futureRounds">
@@ -482,7 +458,7 @@
         </select>
       </div>
       <div class="field">
-        <label>Cumulative Dilution (All Rounds)</label>
+        <label>Cumulative Dilution (Future Rounds)</label>
         <div class="field-row">
           <span class="value negative" id="cumDilution">&mdash;</span>
         </div>
@@ -555,8 +531,8 @@
   <div class="info-note">
     <strong>Assumptions & Disclaimers:</strong><br>
     &bull; <strong>Dilution model:</strong> Granted shares are fixed. Dilution occurs as new shares are issued to investors each round, increasing total shares outstanding and reducing ownership percentage.<br>
-    &bull; <strong>Series B dilution:</strong> The $700M raise at $5.5B pre-money ($6.2B post) is a concrete priced round implying ~11.3% dilution ($700M/$6.2B). The 52.77M pre-money share count is fully diluted, accounting for all outstanding SAFEs converting in the round.<br>
-    &bull; <strong>Carta benchmarks:</strong> Post-Series-B round dilution (Series C, D, E) uses Carta's deep tech fundraising data (919 rounds). Series C: 8.5% / 14.0% / 21.0% at 25th/50th/75th percentile. Series D and E estimated from later-stage priced round trends.<br>
+    &bull; <strong>Series B (closed):</strong> The Series B has closed and is treated as a fixed starting point &mdash; no longer estimated. It priced at $96.5077 per preferred share for a $6.0B post-money valuation, leaving 62,177,446 fully diluted shares outstanding today. All scenarios below model only subsequent (future) equity raises.<br>
+    &bull; <strong>Carta benchmarks:</strong> Future round dilution (Series C, D, E) uses Carta's deep tech fundraising data (919 rounds). Series C: 8.5% / 14.0% / 21.0% at 25th/50th/75th percentile. Series D and E estimated from later-stage priced round trends.<br>
     &bull; <strong>Common vs. Preferred:</strong> This grant is common stock valued at the preferred PPS for illustration. Common shares typically trade at a discount to preferred due to lack of liquidation preferences and other protective provisions. The $1.20 strike price reflects a 409A valuation, not the preferred price.<br>
     &bull; <strong>Strike cost:</strong> Exercise cost is $1.20 &times; shares. Net value = (shares granted &divide; total shares &times; exit valuation) &minus; strike cost.<br>
     &bull; This is not financial or tax advice. AMT, capital gains, and liquidity preferences are not modeled.
@@ -569,18 +545,11 @@
   // =====================================================
   // CONSTANTS
   // =====================================================
-  const PRE_B_SHARES = 52_770_000;   // fully diluted incl. all outstanding SAFEs converting in Series B
-  const SERIES_B_RAISE = 700_000_000;
-  const PRE_MONEY = 5_500_000_000;
-  const POST_MONEY = PRE_MONEY + SERIES_B_RAISE;   // $6.2B post-money
+  // Series B is CLOSED — these are fixed, actual figures (no longer modeled/estimated).
+  const CURRENT_SHARES = 62_177_446;   // fully diluted shares outstanding after the closed Series B
+  const PREFERRED_PPS = 96.5077;       // Series B preferred price per share (actual)
+  const POST_MONEY = 6_000_000_000;    // $6.0B post-money at Series B close
   const STRIKE_PRICE = 1.20;
-
-  // Series B priced round: PPS set by pre-money / pre-money fully diluted shares
-  const SERIES_B_PPS = PRE_MONEY / PRE_B_SHARES;
-  const SERIES_B_NEW_SHARES = SERIES_B_RAISE / SERIES_B_PPS;
-  const POST_B_TOTAL_SHARES = PRE_B_SHARES + SERIES_B_NEW_SHARES;
-  const SERIES_B_DILUTION = SERIES_B_RAISE / POST_MONEY;   // new shares / post-money shares
-  const IMPLIED_PPS = POST_MONEY / POST_B_TOTAL_SHARES;    // equals SERIES_B_PPS
 
   // =====================================================
   // CARTA DILUTION BENCHMARKS (Deep Tech, Priced Rounds)
@@ -588,7 +557,6 @@
   // =====================================================
   // { low: 25th pct, mid: 50th pct, high: 75th pct }
   const CARTA_DILUTION = {
-    seriesB: { low: 0.100, mid: 0.160, high: 0.243 },
     seriesC: { low: 0.085, mid: 0.140, high: 0.210 },
     // Series D+ &mdash; extrapolated from Carta priced round trends
     // Later rounds typically have lower dilution as companies are larger
@@ -633,18 +601,10 @@
     const futureRounds = parseInt(elFutureRounds.value);
     const severity = elSeverity.value;
 
-    // Build round-by-round schedule
+    // Build round-by-round schedule of FUTURE rounds only (Series B is closed).
     // Each entry: { name, dilutionPct, newSharesIssued, totalSharesAfter }
     const schedule = [];
-
-    // Series B &mdash; concrete priced round: $700M raised at $5.5B pre-money
-    let totalShares = POST_B_TOTAL_SHARES;
-    schedule.push({
-      name: 'Series B',
-      dilutionPct: SERIES_B_DILUTION,
-      newSharesIssued: SERIES_B_NEW_SHARES,
-      totalSharesAfter: totalShares,
-    });
+    let totalShares = CURRENT_SHARES;
 
     // Future rounds use Carta benchmarks based on severity toggle
     const roundDefs = [
@@ -672,40 +632,30 @@
     const sharesGranted = SHARES_GRANTED;
     const schedule = getDilutionSchedule();
 
-    // --- Fundamentals ---
-    document.getElementById('seriesBShares').textContent = fmt(Math.round(SERIES_B_NEW_SHARES));
-    document.getElementById('postBTotalShares').textContent = fmt(Math.round(POST_B_TOTAL_SHARES));
-    document.getElementById('impliedPPS').textContent = '$' + IMPLIED_PPS.toFixed(2);
-    document.getElementById('seriesBDilutionVal').textContent = fmtPct(SERIES_B_DILUTION, 1);
-
-    // --- Ownership at various stages ---
-    const ownershipAtGrant = sharesGranted / PRE_B_SHARES;
-    document.getElementById('ownershipAtGrant').textContent = fmtPct(ownershipAtGrant);
-
-    const totalSharesAfterB = schedule[0].totalSharesAfter;
-    const ownershipPostB = sharesGranted / totalSharesAfterB;
+    // --- Ownership: current (post-Series B) vs. after projected future rounds ---
+    const ownershipPostB = sharesGranted / CURRENT_SHARES;
     document.getElementById('ownershipPostB').textContent = fmtPct(ownershipPostB);
 
-    const finalTotalShares = schedule[schedule.length - 1].totalSharesAfter;
+    const finalTotalShares = schedule.length ? schedule[schedule.length - 1].totalSharesAfter : CURRENT_SHARES;
     const ownershipFinal = sharesGranted / finalTotalShares;
     document.getElementById('ownershipFullyDiluted').textContent = fmtPct(ownershipFinal);
 
-    // Paper value
-    const paperValue = sharesGranted * IMPLIED_PPS - sharesGranted * STRIKE_PRICE;
+    // Paper value at the Series B preferred PPS
+    const paperValue = sharesGranted * PREFERRED_PPS - sharesGranted * STRIKE_PRICE;
     document.getElementById('paperValue').textContent = fmtMoney(Math.round(paperValue));
 
-    // Cumulative dilution from grant
-    const cumDilution = 1 - (ownershipFinal / ownershipAtGrant);
+    // Cumulative dilution from future rounds (relative to current post-B ownership)
+    const cumDilution = 1 - (ownershipFinal / ownershipPostB);
     document.getElementById('cumDilution').textContent = fmtPct(cumDilution, 1);
 
     // --- KPIs ---
     document.getElementById('kpiShares').textContent = fmt(sharesGranted);
 
     document.getElementById('kpiTotalShares').textContent = fmt(Math.round(finalTotalShares));
-    document.getElementById('kpiTotalSharesSub').textContent = 'from ' + fmt(PRE_B_SHARES) + ' pre-B';
+    document.getElementById('kpiTotalSharesSub').textContent = 'from ' + fmt(CURRENT_SHARES) + ' post-B';
 
     document.getElementById('kpiOwnership').textContent = fmtPct(ownershipFinal);
-    document.getElementById('kpiOwnershipSub').textContent = fmtPct(ownershipAtGrant) + ' at grant';
+    document.getElementById('kpiOwnershipSub').textContent = fmtPct(ownershipPostB) + ' post-B';
 
     // --- Waterfall ---
     buildWaterfall(sharesGranted, schedule);
@@ -734,12 +684,12 @@
     const container = document.getElementById('waterfall');
     container.innerHTML = '';
 
-    // Build stages: At Grant, then after each round
+    // Build stages: current post-Series B baseline, then after each future round
     const stages = [];
     stages.push({
-      label: 'At Grant',
-      ownership: sharesGranted / PRE_B_SHARES,
-      totalShares: PRE_B_SHARES,
+      label: 'Post-Series B',
+      ownership: sharesGranted / CURRENT_SHARES,
+      totalShares: CURRENT_SHARES,
       dilution: 0,
     });
 
@@ -756,11 +706,11 @@
 
     // Distinct color per round stage
     const stageColors = [
-      { bar: '#6c5ce7', tip: '#6c5ce7', lost: 'rgba(108,92,231,0.15)', lostBorder: 'rgba(108,92,231,0.4)' },   // At Grant (purple)
-      { bar: '#00b894', tip: '#00b894', lost: 'rgba(0,184,148,0.15)', lostBorder: 'rgba(0,184,148,0.4)' },       // Series B (teal)
-      { bar: '#fdcb6e', tip: '#fdcb6e', lost: 'rgba(253,203,110,0.15)', lostBorder: 'rgba(253,203,110,0.4)' },   // Series C (amber)
-      { bar: '#e17055', tip: '#e17055', lost: 'rgba(225,112,85,0.15)', lostBorder: 'rgba(225,112,85,0.4)' },       // Series D (coral)
-      { bar: '#74b9ff', tip: '#74b9ff', lost: 'rgba(116,185,255,0.15)', lostBorder: 'rgba(116,185,255,0.4)' },     // Series E (blue)
+      { bar: '#6c5ce7', tip: '#6c5ce7', lost: 'rgba(108,92,231,0.15)', lostBorder: 'rgba(108,92,231,0.4)' },   // Post-Series B (purple)
+      { bar: '#00b894', tip: '#00b894', lost: 'rgba(0,184,148,0.15)', lostBorder: 'rgba(0,184,148,0.4)' },       // Series C (teal)
+      { bar: '#fdcb6e', tip: '#fdcb6e', lost: 'rgba(253,203,110,0.15)', lostBorder: 'rgba(253,203,110,0.4)' },   // Series D (amber)
+      { bar: '#e17055', tip: '#e17055', lost: 'rgba(225,112,85,0.15)', lostBorder: 'rgba(225,112,85,0.4)' },       // Series E (coral)
+      { bar: '#74b9ff', tip: '#74b9ff', lost: 'rgba(116,185,255,0.15)', lostBorder: 'rgba(116,185,255,0.4)' },     // spare (blue)
     ];
 
     stages.forEach((s, i) => {
@@ -787,7 +737,7 @@
     const totalDilution = 1 - (stages[stages.length - 1].ownership / stages[0].ownership);
     document.getElementById('waterfallTotal').textContent = 'Cumulative dilution: ' + fmtPct(totalDilution, 1);
 
-    // Detail rows — colors match waterfall bars (stageColors[0] = At Grant, so rounds start at index 1)
+    // Detail rows — colors match waterfall bars (stageColors[0] = Post-Series B, so rounds start at index 1)
     const detail = document.getElementById('dilutionDetail');
     let detailHtml = '';
     schedule.forEach((round, i) => {
@@ -877,9 +827,9 @@
 
     const futureRounds = parseInt(elFutureRounds.value);
 
-    // Calculate total shares for each dilution severity
+    // Calculate total shares for each dilution severity (from the closed Series B count)
     function calcTotalShares(sev) {
-      let total = POST_B_TOTAL_SHARES;
+      let total = CURRENT_SHARES;
       const rounds = [CARTA_DILUTION.seriesC, CARTA_DILUTION.seriesD, CARTA_DILUTION.seriesE];
       for (let i = 0; i < futureRounds && i < rounds.length; i++) {
         total = total / (1 - rounds[i][sev]);
