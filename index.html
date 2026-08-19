@@ -484,14 +484,14 @@
       <div class="sub" id="kpiOwnershipSub">&mdash;</div>
     </div>
     <div class="kpi">
-      <div class="label">4-Year Equity Value (at $7B exit)</div>
+      <div class="label">Net Equity Value @ $10B EV</div>
       <div class="number positive" id="kpiEquity4yr">&mdash;</div>
-      <div class="sub" id="kpiEquity4yrSub">Net equity at $5B exit</div>
+      <div class="sub" id="kpiEquity4yrSub">&mdash;</div>
     </div>
     <div class="kpi">
-      <div class="label">Total 4-Year Comp (at $7B exit)</div>
+      <div class="label">Net Equity Value @ $20B EV</div>
       <div class="number positive" id="kpiTotal4yr">&mdash;</div>
-      <div class="sub" id="kpiTotal4yrSub">Cash + net equity value</div>
+      <div class="sub" id="kpiTotal4yrSub">&mdash;</div>
     </div>
   </div>
 
@@ -509,7 +509,7 @@
 
   <!-- Net Equity Value Table -->
   <div class="section-title">Net Equity Value Over 4-Year Vest <span class="badge">110K Shares</span></div>
-  <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">(110K &times; exit valuation &divide; fully diluted shares &minus; strike cost) across exit scenarios up to $20B</p>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">(110K &times; exit valuation &divide; fully diluted shares &minus; strike cost) across exit scenarios up to $100B</p>
   <div class="table-wrapper">
     <table id="sensitivityTable"></table>
   </div>
@@ -663,15 +663,14 @@
     // --- Sensitivity Table ---
     buildSensitivityTable(sharesGranted, finalTotalShares);
 
-    // --- 4-Year Vest KPIs (at $5B base case) ---
-    const baseExitEV = 7e9;
-    const basePPS = baseExitEV / finalTotalShares;
-    const baseNetEquity = sharesGranted * basePPS - sharesGranted * STRIKE_PRICE;
-    const baseTotal4yr = CASH_COMP * HORIZON + baseNetEquity;
-    document.getElementById('kpiTotal4yr').textContent = fmtDollar(baseTotal4yr);
-    document.getElementById('kpiTotal4yrSub').textContent = fmtDollar(CASH_COMP * HORIZON) + ' cash + ' + fmtDollar(baseNetEquity) + ' equity';
-    document.getElementById('kpiEquity4yr').textContent = fmtDollar(baseNetEquity);
-    document.getElementById('kpiEquity4yrSub').textContent = 'Net of $' + fmt(sharesGranted * STRIKE_PRICE) + ' strike cost';
+    // --- Net Equity Value KPIs at $10B and $20B exit valuations ---
+    const strikeCost = sharesGranted * STRIKE_PRICE;
+    const net10B = sharesGranted * (10e9 / finalTotalShares) - strikeCost;
+    const net20B = sharesGranted * (20e9 / finalTotalShares) - strikeCost;
+    document.getElementById('kpiEquity4yr').textContent = fmtDollar(net10B);
+    document.getElementById('kpiEquity4yrSub').textContent = 'Net of $' + fmt(strikeCost) + ' strike cost';
+    document.getElementById('kpiTotal4yr').textContent = fmtDollar(net20B);
+    document.getElementById('kpiTotal4yrSub').textContent = 'Net of $' + fmt(strikeCost) + ' strike cost';
 
     // --- Equity Chart ---
     buildEquityChart();
@@ -759,12 +758,11 @@
   function buildSensitivityTable(sharesGranted, finalTotalShares) {
     const table = document.getElementById('sensitivityTable');
 
-    const exitValues = [1e9, 2e9, 3e9, 5e9, 7e9, 10e9, 15e9, 20e9];
+    const exitValues = [5e9, 10e9, 15e9, 20e9, 50e9, 100e9];
 
     let html = '<thead><tr><th style="text-align:left;border-right:2px solid var(--border);">Exit Valuation</th>';
     exitValues.forEach(ev => {
-      const is5B = ev === 7e9;
-      html += `<th${is5B ? ' style="color:var(--accent-light);"' : ''}>${fmtDollar(ev)}${is5B ? ' (base)' : ''}</th>`;
+      html += `<th>${fmtDollar(ev)}</th>`;
     });
     html += '</tr></thead><tbody>';
 
@@ -773,10 +771,8 @@
     exitValues.forEach(ev => {
       const pps = ev / finalTotalShares;
       const net = sharesGranted * pps - sharesGranted * STRIKE_PRICE;
-      const is5B = ev === 7e9;
-      const cls = is5B ? 'highlight-cell' : '';
       const colorCls = net < 0 ? 'negative' : '';
-      html += `<td class="${cls} ${colorCls}">${fmtDollar(net)}</td>`;
+      html += `<td class="${colorCls}">${fmtDollar(net)}</td>`;
     });
     html += '</tr>';
 
@@ -786,9 +782,7 @@
       const pps = ev / finalTotalShares;
       const net = sharesGranted * pps - sharesGranted * STRIKE_PRICE;
       const total = CASH_COMP * HORIZON + net;
-      const is5B = ev === 7e9;
-      const cls = is5B ? 'highlight-cell' : '';
-      html += `<td class="${cls}">${fmtDollar(total)}</td>`;
+      html += `<td>${fmtDollar(total)}</td>`;
     });
     html += '</tr>';
 
